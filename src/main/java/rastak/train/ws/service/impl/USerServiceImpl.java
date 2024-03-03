@@ -1,7 +1,5 @@
 package rastak.train.ws.service.impl;
 
-import lombok.Setter;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
