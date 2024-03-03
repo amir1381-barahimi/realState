@@ -1,5 +1,6 @@
 package rastak.train.ws.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Value;
 import org.apache.coyote.Response;
@@ -28,8 +29,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping(params = "publicId")
-    public ResponseEntity<MyApiResponse> getUserById(@RequestParam(value = "publicId", required = false) String publicId){
+    @GetMapping("/{publicId}")
+    public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId){
         return userService.getUSerByPublicId(publicId);
     }
     @GetMapping
@@ -51,6 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{publicId}")
+    @Transactional
     public ResponseEntity<MyApiResponse> deleteUser(@PathVariable String publicId){
         logger.info("delete user by public: {}", publicId);
         return userService.deleteUser(publicId);

@@ -91,7 +91,7 @@ public class USerServiceImpl implements UserService {
         if (!password.equals(existedUserEntity.getPassword())){
             throw new UserException("username 0r password not correct", HttpStatus.BAD_REQUEST);
         }
-        logger.info("User with username: "+username+"login");
+        logger.info("User with username: "+username+" login");
         UserResponse userResponse = userUtils.convert(existedUserEntity);
         return userUtils.createResponse(userResponse, HttpStatus.OK);
     }

@@ -88,6 +88,9 @@ public class UserUtils {
         if (signUp.getPassword().isEmpty()) {
             return false;
         }
+        if (signUp.getUserRole() == null){
+            return false;
+        }
         return flag;
     }
 }

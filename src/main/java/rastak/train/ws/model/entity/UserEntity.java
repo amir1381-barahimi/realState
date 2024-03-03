@@ -2,6 +2,7 @@ package rastak.train.ws.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import rastak.train.ws.model.enums.UserRole;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,4 +32,7 @@ public class UserEntity {
     @NotNull
     @NotBlank
     private String password;
+
+    @NotNull
+    private UserRole userRole;
 }

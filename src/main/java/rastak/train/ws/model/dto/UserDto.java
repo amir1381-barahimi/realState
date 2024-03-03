@@ -1,6 +1,7 @@
 package rastak.train.ws.model.dto;
 
 import lombok.Data;
+import rastak.train.ws.model.enums.UserRole;
 
 @Data
 public class UserDto {
@@ -8,5 +9,6 @@ public class UserDto {
     private String publicId;
     private String fullname;
     private String username;
-    private String lastname;
+    private String password;
+    private UserRole userRole;
 }
