@@ -1,11 +1,13 @@
 package rastak.train.ws.service.impl;
 
+import lombok.Setter;
 import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.shared.UserException;
 import rastak.train.ws.model.dto.UserDto;
@@ -19,6 +21,7 @@ import rastak.train.ws.util.UserUtils;
 
 import java.util.List;
 
+@Service
 public class USerServiceImpl implements UserService {
 
     Logger logger = LoggerFactory.getLogger(USerServiceImpl.class);
