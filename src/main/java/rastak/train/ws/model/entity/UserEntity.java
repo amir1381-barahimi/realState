@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import rastak.train.token.Token;
 import rastak.train.ws.model.enums.UserRole;
 
 import javax.validation.constraints.NotBlank;
@@ -47,6 +48,8 @@ public class UserEntity implements UserDetails {
         return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
     @Override
     public String getPassword() {
         return password;
