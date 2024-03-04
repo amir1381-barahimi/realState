@@ -1,9 +1,6 @@
 package rastak.train.ws.controller;
 
 import jakarta.transaction.Transactional;
-import lombok.Getter;
-import lombok.Value;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +28,7 @@ public class UserController {
     }
     @GetMapping("/{publicId}")
     public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId){
-        return userService.getUSerByPublicId(publicId);
+        return userService.getUserByPublicId(publicId);
     }
     @GetMapping
     public List<UserResponse> getAllUser(){

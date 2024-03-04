@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    ResponseEntity<MyApiResponse> getUSerByPublicId(String publicId);
+    ResponseEntity<MyApiResponse> getUserByPublicId(String publicId);
 
     List<UserDto> getAllUser();
 

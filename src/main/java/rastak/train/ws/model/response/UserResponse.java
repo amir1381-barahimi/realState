@@ -1,6 +1,5 @@
 package rastak.train.ws.model.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import rastak.train.ws.model.enums.UserRole;
 
@@ -12,8 +11,8 @@ public class UserResponse {
     private String username;
     private String password;
     private UserRole userRole;
-    @JsonProperty("access_token")
-    private String accessToken;
-    @JsonProperty("access_token")
-    private String refreshToken;
+//    @JsonProperty("access_token")
+//    private String accessToken;
+//    @JsonProperty("access_token")
+//    private String refreshToken;
 }
