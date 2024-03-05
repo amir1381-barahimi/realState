@@ -8,7 +8,7 @@ import rastak.train.ws.model.entity.UserEntity;
 
 import java.util.Optional;
 
-public class ApplicationAuditAware implements AuditorAware {
+public class ApplicationAuditAware implements AuditorAware<Long> {
     @Override
     public Optional<Long> getCurrentAuditor() {
         Authentication authentication =

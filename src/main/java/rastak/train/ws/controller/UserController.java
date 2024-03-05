@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.ws.model.dto.UserDto;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+
     private final UserService userService;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -34,6 +36,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin:read')")
     public List<UserResponse> getAllUser() {
         List<UserDto> userDtos = userService.getAllUser();
         return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
@@ -46,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MyApiResponse> login(@RequestBody Login login) {
+    public ResponseEntity<MyApiResponse> login(@Valid @RequestBody Login login) {
         logger.info("User with username: " + login.getUsername() + " try to login");
         return userService.loginUser(login.getUsername(), login.getPassword());
     }

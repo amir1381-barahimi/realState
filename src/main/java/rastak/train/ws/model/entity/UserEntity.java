@@ -40,7 +40,7 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @Override

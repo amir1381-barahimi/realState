@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import rastak.train.auditing.ApplicationAuditAware;
 import rastak.train.ws.repository.UserRepository;
 
 @Configuration
@@ -31,6 +32,10 @@ public class ApplicationConfig {
         return authProvider;
     }
 
+    @Bean
+    public ApplicationAuditAware auditorAware() {
+        return new ApplicationAuditAware();
+    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

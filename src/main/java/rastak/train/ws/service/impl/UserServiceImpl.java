@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService {
             storedUserEntity = userRepository.save(userEntity);
             var jwtToken = jwtService.generateToken(userEntity);
             var refreshToken = jwtService.generateRefreshToken(userEntity);
-            logger.info("token: " + jwtToken);
-            logger.info("refreshToken: " + refreshToken);
+//            logger.info("token: " + jwtToken);
+//            logger.info("refreshToken: " + refreshToken);
             savedUserToken(storedUserEntity, jwtToken);
         } catch (Exception exception) {
             logger.info(exception.getMessage());
