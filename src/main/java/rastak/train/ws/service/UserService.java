@@ -18,4 +18,5 @@ public interface UserService {
     ResponseEntity<MyApiResponse> deleteUser(String publicId);
 
     ResponseEntity<MyApiResponse> loginUser(String username, String password);
+    ResponseEntity<MyApiResponse> updateUser(SignUp signUp, String publicId);
 }

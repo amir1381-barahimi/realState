@@ -74,6 +74,18 @@ public class UserUtils {
         return userDeleteResponse;
     }
 
+    public UserEntity update(UserEntity existedUserEntity, SignUp signUp){
+        if (signUp.getUserRole() != null)
+            existedUserEntity.setUserRole(signUp.getUserRole());
+        if (signUp.getUsername() != null)
+            existedUserEntity.setUsername(signUp.getUsername());
+        if (signUp.getFullname() != null)
+            existedUserEntity.setFullname(signUp.getFullname());
+        if (signUp.getPassword() != null)
+            existedUserEntity.setPassword(signUp.getPassword());
+        return existedUserEntity;
+    }
+
     private boolean isValidRequestModel(SignUp signUp) {
         boolean flag = true;
         if (signUp == null) {

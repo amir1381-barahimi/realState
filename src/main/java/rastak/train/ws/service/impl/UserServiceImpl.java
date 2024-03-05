@@ -108,6 +108,7 @@ public class UserServiceImpl implements UserService {
         tokenRepository.save(token);
     }
 
+
     @Override
     public ResponseEntity<MyApiResponse> deleteUser(String publicId) {
         int deleteUser = userRepository.deleteByPublicId(publicId);
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException("User with this username not found, please signup", HttpStatus.NOT_FOUND);
         }
         if (!password.equals(existedUserEntity.getPassword())) {
-            throw new UserException("username 0r password not correct", HttpStatus.BAD_REQUEST);
+            throw new UserException("username or password not correct", HttpStatus.BAD_REQUEST);
         }
         var jwtToken = jwtService.generateToken(existedUserEntity);
         var refreshToken = jwtService.generateRefreshToken(existedUserEntity);
@@ -136,6 +137,26 @@ public class UserServiceImpl implements UserService {
         logger.info("User with username: " + username + " login");
         UserResponse userResponse = userUtils.convert(existedUserEntity);
         return userUtils.createResponse(userResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MyApiResponse> updateUser(SignUp signUp, String publicId) {
+        UserEntity existedUserEntity = userRepository.findByPublicId(publicId);
+        if (existedUserEntity == null) {
+            throw new UserException("User not found", HttpStatus.NOT_FOUND);
+        }
+        UserEntity updateUserEntity;
+        updateUserEntity = userUtils.update(existedUserEntity, signUp);
+        if (updateUserEntity == null) {
+            throw new UserException("Invalid Input", HttpStatus.NOT_FOUND);
+        }
+        try {
+            updateUserEntity = userRepository.save(updateUserEntity);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            throw new UserException("Database IO Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return userUtils.createResponse(userUtils.convert(updateUserEntity), HttpStatus.OK);
     }
 
     private void revokeAllUserTokens(UserEntity existedUserEntity) {
