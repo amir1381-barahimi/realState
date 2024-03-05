@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-//    private final To
+    //    private final To
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final UserUtils userUtils;
@@ -53,16 +53,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<MyApiResponse> getUserByPublicId(String publicId) {
         UserEntity userEntity = userRepository.findByPublicId(publicId);
-        if (userEntity == null){
+        if (userEntity == null) {
             throw new UserException("User not found", HttpStatus.NOT_FOUND);
         }
         UserResponse userResponse = userUtils.convert(userEntity);
         return userUtils.createResponse(userResponse, HttpStatus.OK);
     }
+
     @Override
     public List<UserDto> getAllUser() {
         List<UserEntity> userEntities = userRepository.findAll();
-        if (userEntities == null){
+        if (userEntities == null) {
             throw new UserException("Any user not found", HttpStatus.NOT_FOUND);
         }
         return userEntities.stream().map(userEntity -> new ModelMapper().map(userEntity, UserDto.class)).toList();
@@ -71,25 +72,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<MyApiResponse> addUser(SignUp signUp) {
         UserDto userDto = userUtils.convert(signUp);
-        if (userDto == null){
+        if (userDto == null) {
             throw new UserException("Invalid Input", HttpStatus.BAD_REQUEST);
         }
         UserEntity existedUserEntity = userRepository.findByUsername(signUp.getUsername());
-        if (existedUserEntity != null){
+        if (existedUserEntity != null) {
             throw new UserException("User with this username was exist", HttpStatus.CONFLICT);
         }
         UserEntity userEntity = userUtils.convert(userDto);
         UserEntity storedUserEntity;
         try {
-            storedUserEntity= userRepository.save(userEntity);
+            storedUserEntity = userRepository.save(userEntity);
             var jwtToken = jwtService.generateToken(userEntity);
             var refreshToken = jwtService.generateRefreshToken(userEntity);
-            logger.info("token: "+jwtToken);
-            logger.info("refreshToken: "+refreshToken);
+            logger.info("token: " + jwtToken);
+            logger.info("refreshToken: " + refreshToken);
             savedUserToken(storedUserEntity, jwtToken);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             logger.info(exception.getMessage());
-            throw new UserException("DataBase IO error" , HttpStatus.BAD_REQUEST);
+            throw new UserException("DataBase IO error", HttpStatus.BAD_REQUEST);
         }
 
 
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<MyApiResponse> deleteUser(String publicId) {
         int deleteUser = userRepository.deleteByPublicId(publicId);
-        if (deleteUser == 0 ){
+        if (deleteUser == 0) {
             throw new UserException("User not found with this id", HttpStatus.NOT_FOUND);
         }
         UserDeleteResponse userDeleteResponse = userUtils.createDeleteResponse(publicId);
@@ -120,19 +121,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<MyApiResponse> loginUser(String username, String password) {
         UserEntity existedUserEntity = userRepository.findByUsername(username);
-        if (existedUserEntity == null){
+        if (existedUserEntity == null) {
             throw new UserException("User with this username not found, please signup", HttpStatus.NOT_FOUND);
         }
-        if (!password.equals(existedUserEntity.getPassword())){
+        if (!password.equals(existedUserEntity.getPassword())) {
             throw new UserException("username 0r password not correct", HttpStatus.BAD_REQUEST);
         }
         var jwtToken = jwtService.generateToken(existedUserEntity);
         var refreshToken = jwtService.generateRefreshToken(existedUserEntity);
         revokeAllUserTokens(existedUserEntity);
         savedUserToken(existedUserEntity, jwtToken);
-        logger.info("token: "+jwtToken);
-        logger.info("refreshToken: "+refreshToken);
-        logger.info("User with username: "+username+" login");
+        logger.info("token: " + jwtToken);
+        logger.info("refreshToken: " + refreshToken);
+        logger.info("User with username: " + username + " login");
         UserResponse userResponse = userUtils.convert(existedUserEntity);
         return userUtils.createResponse(userResponse, HttpStatus.OK);
     }
@@ -148,18 +149,18 @@ public class UserServiceImpl implements UserService {
         tokenRepository.saveAll(validUserToken);
     }
 
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response)throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String username;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
         username = jwtService.extractUsername(refreshToken);
-        if (username != null){
+        if (username != null) {
             var existedUserEntity = this.userRepository.findByUsername(username);
-            if (jwtService.isTokenValid(refreshToken, existedUserEntity)){
+            if (jwtService.isTokenValid(refreshToken, existedUserEntity)) {
                 var accessToken = jwtService.generateToken(existedUserEntity);
                 revokeAllUserTokens(existedUserEntity);
                 savedUserToken(existedUserEntity, accessToken);

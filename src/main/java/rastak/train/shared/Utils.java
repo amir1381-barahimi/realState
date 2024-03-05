@@ -11,7 +11,7 @@ public class Utils {
 
     Logger logger = LoggerFactory.getLogger(Utils.class);
 
-    private String generateRandomString(){
+    private String generateRandomString() {
         logger.info("GenerateRandomString() has called");
 
         Random random = new Random();
@@ -24,7 +24,7 @@ public class Utils {
         return returnValue.toString();
     }
 
-    public String getPublicId(){
+    public String getPublicId() {
         return generateRandomString();
     }
 }

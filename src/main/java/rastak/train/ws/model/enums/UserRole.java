@@ -2,7 +2,6 @@ package rastak.train.ws.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -11,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static rastak.train.ws.model.enums.Permission.*;
+
 @RequiredArgsConstructor
 public enum UserRole {
 
@@ -18,11 +18,11 @@ public enum UserRole {
 
     ADMIN(
             Set.of(
-            ADMIN_READ,
-            ADMIN_UPDATE,
-            ADMIN_DELETE,
-            ADMIN_CREATE,
-            USER_READ
+                    ADMIN_READ,
+                    ADMIN_UPDATE,
+                    ADMIN_DELETE,
+                    ADMIN_CREATE,
+                    USER_READ
             )
     ),
 
@@ -33,7 +33,7 @@ public enum UserRole {
     @Getter
     private final Set<Permission> permissions;
 
-    public List<SimpleGrantedAuthority> getAuthorized(){
+    public List<SimpleGrantedAuthority> getAuthorized() {
         var authorized = getPermissions()
                 .stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))

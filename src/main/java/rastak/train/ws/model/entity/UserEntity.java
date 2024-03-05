@@ -50,6 +50,7 @@ public class UserEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
     @Override
     public String getPassword() {
         return password;

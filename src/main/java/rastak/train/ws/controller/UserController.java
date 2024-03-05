@@ -23,34 +23,37 @@ public class UserController {
     private final UserService userService;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping("/{publicId}")
-    public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId){
+    public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId) {
         return userService.getUserByPublicId(publicId);
     }
+
     @GetMapping
-    public List<UserResponse> getAllUser(){
+    public List<UserResponse> getAllUser() {
         List<UserDto> userDtos = userService.getAllUser();
         return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<MyApiResponse> signUp(@Valid @RequestBody SignUp signUp){
+    public ResponseEntity<MyApiResponse> signUp(@Valid @RequestBody SignUp signUp) {
         logger.info("add new user to database  with username: {}", signUp.getUsername());
         return userService.addUser(signUp);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MyApiResponse> login(@RequestBody Login login){
-        logger.info("User with username: "+login.getUsername()+" try to login");
+    public ResponseEntity<MyApiResponse> login(@RequestBody Login login) {
+        logger.info("User with username: " + login.getUsername() + " try to login");
         return userService.loginUser(login.getUsername(), login.getPassword());
     }
 
     @DeleteMapping("/{publicId}")
     @Transactional
-    public ResponseEntity<MyApiResponse> deleteUser(@PathVariable String publicId){
+    public ResponseEntity<MyApiResponse> deleteUser(@PathVariable String publicId) {
         logger.info("delete user by public: {}", publicId);
         return userService.deleteUser(publicId);
     }
