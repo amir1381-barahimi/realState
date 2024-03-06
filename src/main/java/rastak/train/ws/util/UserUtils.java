@@ -75,8 +75,8 @@ public class UserUtils {
     }
 
     public UserEntity update(UserEntity existedUserEntity, SignUp signUp){
-        if (signUp.getUserRole() != null)
-            existedUserEntity.setUserRole(signUp.getUserRole());
+        if (signUp.getRole() != null)
+            existedUserEntity.setRole(signUp.getRole());
         if (signUp.getUsername() != null)
             existedUserEntity.setUsername(signUp.getUsername());
         if (signUp.getFullname() != null)
@@ -100,7 +100,7 @@ public class UserUtils {
         if (signUp.getPassword().isEmpty()) {
             return false;
         }
-        if (signUp.getUserRole() == null){
+        if (signUp.getRole() == null){
             return false;
         }
         return flag;

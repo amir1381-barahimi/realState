@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import rastak.train.ws.model.enums.UserRole;
+import rastak.train.ws.model.enums.Role;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,5 @@ public class SignUp {
     private String username;
     private String password;
     private String fullname;
-    private UserRole userRole;
+    private Role role;
 }

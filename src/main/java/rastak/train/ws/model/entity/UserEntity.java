@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import rastak.train.token.Token;
-import rastak.train.ws.model.enums.UserRole;
+import rastak.train.ws.model.enums.Role;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -41,14 +41,14 @@ public class UserEntity implements UserDetails {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(userRole.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Token> tokens;
 
     @Override

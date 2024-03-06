@@ -15,7 +15,7 @@ import rastak.train.ws.model.entity.UserEntity;
 public class Token {
     @Id
     @GeneratedValue
-    public Integer id;
+    public Long id;
 
     @Column(unique = true)
     public String token;
@@ -27,7 +27,7 @@ public class Token {
 
     public boolean expired;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     public UserEntity user;
 }

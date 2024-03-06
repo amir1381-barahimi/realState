@@ -3,21 +3,21 @@ package rastak.train.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static rastak.train.ws.model.enums.Permission.*;
-import static rastak.train.ws.model.enums.UserRole.ADMIN;
-import static rastak.train.ws.model.enums.UserRole.USER;
+import static rastak.train.ws.model.enums.Role.ADMIN;
+import static rastak.train.ws.model.enums.Role.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -41,15 +41,19 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers(WITHE_LIST_URL)
                         .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users/**").hasAuthority(ADMIN_CREATE.name())
-                        .requestMatchers(HttpMethod.PUT,"/users/**").hasAuthority(ADMIN_UPDATE.name())
-                        .requestMatchers(HttpMethod.DELETE,"/users/**").hasAuthority(ADMIN_DELETE.name())
-                        .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole(USER.name(), ADMIN.name())
+                        .requestMatchers("/**")
+                        .permitAll()
+                        .requestMatchers("/users/**").hasAnyRole(USER.name(), ADMIN.name())
+                        .requestMatchers(GET,"/users/**").hasAuthority(USER_READ.name())
+                        .requestMatchers(GET,"/admin/users/**").hasAuthority(ADMIN_READ.name())
+                        .requestMatchers(POST, "/users/**").hasAuthority(ADMIN_CREATE.name())
+                        .requestMatchers(PUT,"/users/**").hasAuthority(ADMIN_UPDATE.name())
+                        .requestMatchers(DELETE,"/users/**").hasAuthority(ADMIN_DELETE.name())
                         .anyRequest()
                         .authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

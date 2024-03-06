@@ -3,6 +3,7 @@ package rastak.train.ws.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum Permission {
 
@@ -13,7 +14,6 @@ public enum Permission {
     USER_READ("user:read");
 
 
-    @Getter
     private final String permission;
 
 }
