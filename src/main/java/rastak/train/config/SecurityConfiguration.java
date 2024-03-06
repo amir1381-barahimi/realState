@@ -13,11 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-import static rastak.train.ws.model.enums.Permission.*;
-import static rastak.train.ws.model.enums.Role.ADMIN;
-import static rastak.train.ws.model.enums.Role.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -26,8 +22,7 @@ import static rastak.train.ws.model.enums.Role.USER;
 public class SecurityConfiguration {
 
     private static final String[] WITHE_LIST_URL = {
-            "/users/signup",
-            "/users/login",
+            "/auth/**",
             "/swagger-ui/"
     };
 
@@ -41,14 +36,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers(WITHE_LIST_URL)
                         .permitAll()
-                        .requestMatchers("/**")
-                        .permitAll()
-                        .requestMatchers("/users/**").hasAnyRole(USER.name(), ADMIN.name())
-                        .requestMatchers(GET,"/users/**").hasAuthority(USER_READ.name())
-                        .requestMatchers(GET,"/admin/users/**").hasAuthority(ADMIN_READ.name())
-                        .requestMatchers(POST, "/users/**").hasAuthority(ADMIN_CREATE.name())
-                        .requestMatchers(PUT,"/users/**").hasAuthority(ADMIN_UPDATE.name())
-                        .requestMatchers(DELETE,"/users/**").hasAuthority(ADMIN_DELETE.name())
+//                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/users/**").hasAnyRole(USER.name(), ADMIN.name())
+//                        .requestMatchers(GET,"/users/**").hasAuthority(USER_READ.name())
+//                        .requestMatchers(GET,"/users/**").hasAuthority(ADMIN_READ.name())
+//                        .requestMatchers(POST, "/users/**").hasAuthority(ADMIN_CREATE.name())
+//                        .requestMatchers(PUT,"/users/**").hasAuthority(ADMIN_UPDATE.name())
+//                        .requestMatchers(DELETE,"/users/**").hasAuthority(ADMIN_DELETE.name())
                         .anyRequest()
                         .authenticated()
                 )
