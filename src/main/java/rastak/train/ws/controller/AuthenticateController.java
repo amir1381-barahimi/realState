@@ -21,11 +21,13 @@ public class AuthenticateController {
     public AuthenticateController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping("/signup")
     public ResponseEntity<MyApiResponse> signUp(@RequestBody SignUp signUp) {
         logger.info("add new user to database  with username: {}", signUp.getUsername());
         return userService.addUser(signUp);
     }
+
     @PostMapping("/login")
     public ResponseEntity<MyApiResponse> login(@RequestBody Login login) {
         logger.info("User with username: " + login.getUsername() + " try to login");

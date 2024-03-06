@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers(WITHE_LIST_URL)
-                        .permitAll()
+                                .permitAll()
 //                        .requestMatchers("/**").permitAll()
 //                        .requestMatchers("/users/**").hasAnyRole(USER.name(), ADMIN.name())
 //                        .requestMatchers(GET,"/users/**").hasAuthority(USER_READ.name())
@@ -43,8 +43,8 @@ public class SecurityConfiguration {
 //                        .requestMatchers(POST, "/users/**").hasAuthority(ADMIN_CREATE.name())
 //                        .requestMatchers(PUT,"/users/**").hasAuthority(ADMIN_UPDATE.name())
 //                        .requestMatchers(DELETE,"/users/**").hasAuthority(ADMIN_DELETE.name())
-                        .anyRequest()
-                        .authenticated()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(STATELESS)

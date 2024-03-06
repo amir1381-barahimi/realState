@@ -25,16 +25,16 @@ public class UserUtils {
         this.utils = utils;
     }
 
-    public UserResponse convert(UserEntity userEntity){
-        if (userEntity == null){
+    public UserResponse convert(UserEntity userEntity) {
+        if (userEntity == null) {
             return null;
         }
         UserResponse userResponse = modelMapper.map(userEntity, UserResponse.class);
         return userResponse;
     }
 
-    public ResponseEntity<MyApiResponse> createResponse(Object userResponse, HttpStatus httpStatus){
-        if (userResponse == null || httpStatus == null){
+    public ResponseEntity<MyApiResponse> createResponse(Object userResponse, HttpStatus httpStatus) {
+        if (userResponse == null || httpStatus == null) {
             return null;
         }
         MyApiResponse apiResponse = new MyApiResponse();
@@ -46,14 +46,14 @@ public class UserUtils {
     }
 
 
-    public UserDto convert(SignUp signUp){
-        if (isValidRequestModel(signUp)){
+    public UserDto convert(SignUp signUp) {
+        if (isValidRequestModel(signUp)) {
             return createDtoModel(signUp);
         }
         return null;
     }
 
-    private UserDto createDtoModel(SignUp signUp){
+    private UserDto createDtoModel(SignUp signUp) {
         UserDto userDto = modelMapper.map(signUp, UserDto.class);
         userDto.setPublicId(utils.getPublicId());
         return userDto;
@@ -74,7 +74,7 @@ public class UserUtils {
         return userDeleteResponse;
     }
 
-    public UserEntity update(UserEntity existedUserEntity, SignUp signUp){
+    public UserEntity update(UserEntity existedUserEntity, SignUp signUp) {
         if (signUp.getRole() != null)
             existedUserEntity.setRole(signUp.getRole());
         if (signUp.getUsername() != null)
@@ -100,7 +100,7 @@ public class UserUtils {
         if (signUp.getPassword().isEmpty()) {
             return false;
         }
-        if (signUp.getRole() == null){
+        if (signUp.getRole() == null) {
             return false;
         }
         return flag;

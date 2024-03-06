@@ -33,12 +33,14 @@ public class UserController {
     public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId) {
         return userService.getUserByPublicId(publicId);
     }
+
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read') or hasAuthority('user:read')")
     public List<UserResponse> getAllUser() {
         List<UserDto> userDtos = userService.getAllUser();
         return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
     }
+
     @DeleteMapping("/{publicId}")
     @PreAuthorize("hasAuthority('admin:delete')")
     @Transactional
