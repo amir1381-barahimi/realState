@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 public class UserController {
 
 
@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/{publicId}")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin:read') or hasAuthority('user:read')")
     public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId) {
         return userService.getUserByPublicId(publicId);
     }
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin:read') or hasAuthority('user:read')")
     public List<UserResponse> getAllUser() {
         List<UserDto> userDtos = userService.getAllUser();
         return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
