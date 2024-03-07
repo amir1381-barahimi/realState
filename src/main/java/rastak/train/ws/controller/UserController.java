@@ -1,5 +1,9 @@
 package rastak.train.ws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,6 +33,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "get a user", description = "Get User By PublicId or Username", tags = {"USER"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The request succeeded.", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "The server cannot find the requested resource. In the browser, this means the URL is not recognized.", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")})
+    })
     @GetMapping("/{publicId}")
     @PreAuthorize("hasAuthority('admin:read') or hasAuthority('user:read')")
     public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId) {

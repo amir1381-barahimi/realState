@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import rastak.train.token.Token;
 import rastak.train.ws.model.enums.Role;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,21 +22,14 @@ public class UserEntity implements UserDetails {
     private String publicId;
 
     @Column(length = 50)
-    @NotNull
-    @NotBlank
     private String fullname;
 
     @Column(length = 50)
-    @NotNull
-    @NotBlank
     private String username;
 
     @Column(length = 50)
-    @NotNull
-    @NotBlank
     private String password;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
 

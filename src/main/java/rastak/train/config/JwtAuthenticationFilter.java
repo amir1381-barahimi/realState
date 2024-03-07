@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import rastak.train.token.TokenRepository;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @Component
@@ -27,9 +26,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain)
+             HttpServletRequest request,
+            HttpServletResponse response,
+             FilterChain filterChain)
             throws ServletException, IOException {
         if (request.getServletPath().contains("/users/signup") || request.getServletPath().contains("/users/login")) {
             filterChain.doFilter(request, response);
