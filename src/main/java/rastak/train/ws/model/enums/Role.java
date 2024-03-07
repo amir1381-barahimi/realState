@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static rastak.train.ws.model.enums.Permission.*;
 
+@Getter
 @RequiredArgsConstructor
 public enum Role {
 
@@ -18,8 +19,7 @@ public enum Role {
                     ADMIN_READ,
                     ADMIN_UPDATE,
                     ADMIN_DELETE,
-                    ADMIN_CREATE,
-                    USER_READ
+                    ADMIN_CREATE
             )
     ),
 
@@ -27,7 +27,6 @@ public enum Role {
             USER_READ
     ));
 
-    @Getter
     private final Set<Permission> permissions;
 
     public List<SimpleGrantedAuthority> getAuthorized() {

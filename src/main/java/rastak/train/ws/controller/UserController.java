@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.ws.model.dto.UserDto;
+import rastak.train.ws.model.request.SignUp;
 import rastak.train.ws.model.response.UserResponse;
 import rastak.train.ws.service.UserService;
 
@@ -40,7 +41,11 @@ public class UserController {
         List<UserDto> userDtos = userService.getAllUser();
         return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
     }
-
+    @PutMapping("/{publicId}")
+    @PreAuthorize("hasAuthority('admin:update')")
+    public ResponseEntity<MyApiResponse> updateUser(@RequestBody SignUp signUp,@PathVariable String publicId){
+        return userService.updateUser(signUp, publicId);
+    }
     @DeleteMapping("/{publicId}")
     @PreAuthorize("hasAuthority('admin:delete')")
     @Transactional
