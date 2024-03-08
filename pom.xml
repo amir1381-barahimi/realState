@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>rastak</groupId>
-	<artifactId>train</artifactId>
+	<artifactId>rastak-task</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>task</name>
 	<description>Demo project for Spring Boot</description>
@@ -76,6 +76,10 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

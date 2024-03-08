@@ -97,18 +97,6 @@ public class UserServiceImpl implements UserService {
         return userUtils.createResponse(userUtils.convert(storedUserEntity), HttpStatus.CREATED);
     }
 
-    private void savedUserToken(UserEntity storedUserEntity, String jwtToken) {
-        var token = Token.builder()
-                .user(storedUserEntity)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
-    }
-
-
     @Override
     public ResponseEntity<MyApiResponse> deleteUser(String publicId) {
         int deleteUser = userRepository.deleteByPublicId(publicId);
@@ -157,6 +145,18 @@ public class UserServiceImpl implements UserService {
             throw new UserException("Database IO Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return userUtils.createResponse(userUtils.convert(updateUserEntity), HttpStatus.OK);
+    }
+
+
+    private void savedUserToken(UserEntity storedUserEntity, String jwtToken) {
+        var token = Token.builder()
+                .user(storedUserEntity)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
     }
 
     private void revokeAllUserTokens(UserEntity existedUserEntity) {
