@@ -11,8 +11,4 @@ public class UserResponse {
     private String username;
     private String password;
     private Role role;
-//    @JsonProperty("access_token")
-//    private String accessToken;
-//    @JsonProperty("access_token")
-//    private String refreshToken;
 }

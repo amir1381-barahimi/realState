@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rastak.train.config.JwtService;
 import rastak.train.shared.MyApiResponse;
@@ -32,20 +30,14 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-
-    //    private final To
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final UserUtils userUtils;
 
-    public UserServiceImpl(TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, UserRepository userRepository, UserUtils userUtils) {
+    public UserServiceImpl(TokenRepository tokenRepository, JwtService jwtService, UserRepository userRepository, UserUtils userUtils) {
         this.tokenRepository = tokenRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.userUtils = userUtils;
     }
@@ -85,8 +77,6 @@ public class UserServiceImpl implements UserService {
             storedUserEntity = userRepository.save(userEntity);
             var jwtToken = jwtService.generateToken(userEntity);
             var refreshToken = jwtService.generateRefreshToken(userEntity);
-//            logger.info("token: " + jwtToken);
-//            logger.info("refreshToken: " + refreshToken);
             savedUserToken(storedUserEntity, jwtToken);
         } catch (Exception exception) {
             logger.info(exception.getMessage());
