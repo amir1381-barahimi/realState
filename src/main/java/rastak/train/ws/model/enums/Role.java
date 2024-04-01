@@ -23,9 +23,20 @@ public enum Role {
             )
     ),
 
-    USER(Set.of(
-            USER_READ
-    ));
+    SUPPORT(
+            Set.of(
+                    SUPPORT_READ,
+                    SUPPORT_UPDATE
+            )
+    ),
+
+    CUSTOMER(
+            Set.of(
+                    CUSTOMER_READ,
+                    CUSTOMER_UPDATE,
+                    CUSTOMER_CREATE
+            )
+    );
 
     private final Set<Permission> permissions;
 

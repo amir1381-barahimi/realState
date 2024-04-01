@@ -82,8 +82,6 @@ public class UserServiceImpl implements UserService {
             logger.info(exception.getMessage());
             throw new UserException("DataBase IO error", HttpStatus.BAD_REQUEST);
         }
-
-
         return userUtils.createResponse(userUtils.convert(storedUserEntity), HttpStatus.CREATED);
     }
 

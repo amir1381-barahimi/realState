@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>rastak</groupId>
-	<artifactId>rastak-task</artifactId>
+	<artifactId>balonet-task</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>task</name>
 	<description>Demo project for Spring Boot</description>

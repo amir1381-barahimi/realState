@@ -33,6 +33,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorized();

@@ -11,7 +11,11 @@ public enum Permission {
     ADMIN_UPDATE("admin:update"),
     ADMIN_CREATE("admin:create"),
     ADMIN_DELETE("admin:delete"),
-    USER_READ("user:read");
+    SUPPORT_READ("support:read"),
+    SUPPORT_UPDATE("support:update"),
+    CUSTOMER_READ("customer:read"),
+    CUSTOMER_UPDATE("customer:update"),
+    CUSTOMER_CREATE("customer:create");
 
 
     private final String permission;

@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         name = "Abdollatif",
                         email = "A.latifnajafizadeh@gmail.com"
                 ),
-                description = "OpenApi documentation for Rastak task",
+                description = "OpenApi documentation for balonet task",
                 title = "OpenApi specification - Abdollatif",
                 version = "1.0",
                 license = @License(
@@ -29,8 +29,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "http://localhost:8080"
                 ),
                 @Server(
-                        description = "PROD ENV",
-                        url = "https://aliboucoding.com/course"
+                        description = "PROD ENV"
                 )
         },
         security = {
@@ -48,5 +47,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
         in = SecuritySchemeIn.HEADER
 )
 public class OpenAPIConfig {
+//    url : http://localhost:8080/swagger-ui/index.html
 
 }

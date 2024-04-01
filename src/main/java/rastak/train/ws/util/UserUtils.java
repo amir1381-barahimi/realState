@@ -1,27 +1,45 @@
 package rastak.train.ws.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import rastak.train.config.JwtService;
 import rastak.train.shared.MyApiResponse;
+import rastak.train.shared.TicketException;
+import rastak.train.shared.UserException;
 import rastak.train.shared.Utils;
 import rastak.train.ws.model.dto.UserDto;
 import rastak.train.ws.model.entity.UserEntity;
+import rastak.train.ws.model.enums.Role;
+import rastak.train.ws.model.enums.Status;
 import rastak.train.ws.model.request.SignUp;
 import rastak.train.ws.model.response.UserDeleteResponse;
 import rastak.train.ws.model.response.UserResponse;
+import rastak.train.ws.repository.TicketRepository;
+import rastak.train.ws.repository.UserRepository;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class UserUtils {
 
     private final ModelMapper modelMapper = new ModelMapper();
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final TicketRepository ticketRepository;
 
     private final Utils utils;
 
-    public UserUtils(Utils utils) {
+    public UserUtils(JwtService jwtService, UserRepository userRepository, TicketRepository ticketRepository, Utils utils) {
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.ticketRepository = ticketRepository;
         this.utils = utils;
     }
 
@@ -104,5 +122,39 @@ public class UserUtils {
             return false;
         }
         return flag;
+    }
+
+    public UserEntity getCurrentUser(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String username;
+        if (token != null && token.startsWith("Bearer ")) {
+            String tokenWithoutBearer = token.substring(7);
+            username = jwtService.extractUsername(tokenWithoutBearer);
+        } else {
+            throw new TicketException("Invalid or missing token", HttpStatus.UNAUTHORIZED);
+        }
+        UserEntity currentUser = userRepository.findByUsername(username);
+        if (currentUser == null) {
+            throw new UserException("User not found", HttpStatus.NOT_FOUND);
+        }
+        return currentUser;
+    }
+
+    public UserEntity findSupport(){
+        List<UserEntity> supportUsers = userRepository.findByRole(Role.SUPPORT);
+        Map<UserEntity, Integer> openTicketCount = new HashMap<>();
+        for (UserEntity user : supportUsers){
+            openTicketCount.put(user, ticketRepository.countBySupportAndStatus(user, Status.OPEN));
+        }
+
+        UserEntity leastLoadedSupport = null;
+        int minOpenTickets = Integer.MAX_VALUE;
+        for (Map.Entry<UserEntity, Integer> entry : openTicketCount.entrySet()) {
+            if (entry.getValue() < minOpenTickets) {
+                minOpenTickets = entry.getValue();
+                leastLoadedSupport = entry.getKey();
+            }
+        }
+        return leastLoadedSupport;
     }
 }

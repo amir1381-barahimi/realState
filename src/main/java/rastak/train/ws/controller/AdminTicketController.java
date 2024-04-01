@@ -5,70 +5,82 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rastak.train.shared.MyApiResponse;
-import rastak.train.ws.model.dto.UserDto;
-import rastak.train.ws.model.request.SignUp;
-import rastak.train.ws.model.response.UserResponse;
-import rastak.train.ws.service.UserService;
+import rastak.train.ws.model.dto.TicketDto;
+import rastak.train.ws.model.entity.TicketEntity;
+import rastak.train.ws.model.entity.UserEntity;
+import rastak.train.ws.model.enums.Status;
+import rastak.train.ws.model.request.TicketRequest;
+import rastak.train.ws.model.response.TicketResponse;
+import rastak.train.ws.repository.TicketRepository;
+import rastak.train.ws.repository.UserRepository;
+import rastak.train.ws.service.TicketService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER') or hasRole('SUPPORT')")
-public class UserController {
+public class AdminTicketController {
 
-
-    private final UserService userService;
-
+    private final TicketService ticketService;
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public AdminTicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
-    @Operation(summary = "get a user", description = "Get User By PublicId or Username,ADMIN can access to this method", tags = {"USER"})
+
+
+    @Operation(summary = "get a ticket", description = "Get ticket By PublicId, ADMIN can access to this method", tags = {"ADMIN-TICKETS"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request succeeded.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "The server cannot find the requested resource. In the browser, this means the URL is not recognized.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")})
     })
-    @GetMapping("/{publicId}")
+    @GetMapping("/tickets/{publicId}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<MyApiResponse> getUserById(@PathVariable String publicId) {
-        return userService.getUserByPublicId(publicId);
+    public ResponseEntity<MyApiResponse> getTicketById(@PathVariable String publicId) {
+        return ticketService.getTicketByPublicId(publicId);
     }
-    @Operation(summary = "get all user", description = "Get All User, ADMIN can access to this method ", tags = {"USER"})
+
+    @Operation(summary = "get all tickets", description = "Get All Ticket, ADMIN can access to this method ", tags = {"ADMIN-TICKETS"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request succeeded.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "The server cannot find the requested resource. In the browser, this means the URL is not recognized.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")})
     })
-    @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
-    public List<UserResponse> getAllUser() {
-        List<UserDto> userDtos = userService.getAllUser();
-        return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
+    @GetMapping("/tickets")
+    @PreAuthorize("hasAuthority('admin:read') or hasAuthority('customer:read')")
+    public List<TicketResponse> getAllTicket() {
+        List<TicketDto> ticketDtos = ticketService.getAllTicket();
+        return ticketDtos.stream().map(ticketDto -> new ModelMapper().map(ticketDto, TicketResponse.class)).toList();
     }
-    @Operation(summary = "update user", description = "update User By Id from Database, Only ADMIN can access to this method", tags = {"USER"})
+
+
+    @Operation(summary = "update ticket", description = "update ticket By Id from Database, Only ADMIN can access to this method", tags = {"ADMIN-TICKETS"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request succeeded.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")})
     })
-    @PutMapping("/{publicId}")
+    @PutMapping("/tickets/{publicId}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<MyApiResponse> updateUser(@RequestBody SignUp signUp,@PathVariable String publicId){
-        return userService.updateUser(signUp, publicId);
+    public ResponseEntity<MyApiResponse> updateTicket(@RequestBody TicketRequest ticketRequest, @PathVariable String publicId) {
+        return ticketService.updateTicket(publicId, ticketRequest);
     }
-    @Operation(summary = "delete user", description = "delete User By Id from Database, Only ADMIN can access to this method", tags = {"USER"})
+
+    @Operation(summary = "delete ticket", description = "delete ticket By Id from Database, Only ADMIN can access to this method", tags = {"ADMIN-TICKETS"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request succeeded.", content = {@Content(mediaType = "application/json", schema = @Schema(type = "object"))}),
             @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).", content = {@Content(mediaType = "application/json")}),
@@ -76,11 +88,12 @@ public class UserController {
                     The server has encountered a situation it does not know how to handle.
                     """, content = {@Content(mediaType = "application/json")})
     })
-    @DeleteMapping("/{publicId}")
+    @DeleteMapping("/tickets/{publicId}")
     @PreAuthorize("hasAuthority('admin:delete')")
     @Transactional
-    public ResponseEntity<MyApiResponse> deleteUser(@PathVariable String publicId) {
+    public ResponseEntity<MyApiResponse> deleteTickets(@PathVariable String publicId) {
         logger.info("delete user by public: {}", publicId);
-        return userService.deleteUser(publicId);
+        return ticketService.deleteTicket(publicId);
     }
+
 }
