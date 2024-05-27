@@ -5,7 +5,7 @@ import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.ws.model.dto.TicketDto;
-import rastak.train.ws.model.entity.CommentEntity;
+//import rastak.train.ws.model.entity.CommentEntity;
 import rastak.train.ws.model.entity.UserEntity;
 import rastak.train.ws.model.enums.Role;
 import rastak.train.ws.model.request.TicketRequest;
@@ -26,5 +26,5 @@ public interface TicketService {
 
     List<TicketDto> findUserTicket(HttpServletRequest request);
     List<TicketDto> findTicketBySupport(Role role);
-    void addComment(String TicketId, CommentEntity comment);
+//    void addComment(String TicketId, CommentEntity comment);
 }

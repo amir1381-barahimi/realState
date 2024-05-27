@@ -16,8 +16,8 @@ public class TicketEntity {
     private String title;
     private String Description;
     private Status status;
-    @OneToMany
-    private List<CommentEntity> comment;
+//    @OneToMany
+//    private List<CommentEntity> comment;
     @ManyToOne
     private UserEntity support;
     @ManyToOne

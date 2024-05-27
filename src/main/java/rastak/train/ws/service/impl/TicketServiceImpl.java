@@ -14,7 +14,7 @@ import rastak.train.shared.MyApiResponse;
 import rastak.train.shared.TicketException;
 import rastak.train.shared.UserException;
 import rastak.train.ws.model.dto.TicketDto;
-import rastak.train.ws.model.entity.CommentEntity;
+//import rastak.train.ws.model.entity.CommentEntity;
 import rastak.train.ws.model.entity.TicketEntity;
 import rastak.train.ws.model.entity.UserEntity;
 import rastak.train.ws.model.enums.Role;
@@ -87,11 +87,11 @@ public class TicketServiceImpl implements TicketService {
         return ticketEntities.stream().map(ticketEntity -> new ModelMapper().map(ticketEntity, TicketDto.class)).toList();
     }
 
-    @Override
-    public void addComment(String TicketId, CommentEntity comment) {
-        TicketEntity ticketEntity = ticketRepository.findByPublicId(TicketId);
-
-    }
+//    @Override
+//    public void addComment(String TicketId, CommentEntity comment) {
+//        TicketEntity ticketEntity = ticketRepository.findByPublicId(TicketId);
+//
+//    }
 
     @Override
     public ResponseEntity<MyApiResponse> addTicket(TicketRequest ticketRequest, HttpServletRequest request) {
