@@ -1,37 +1,29 @@
 package rastak.train.ws.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import rastak.train.config.JwtService;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.shared.TicketException;
 import rastak.train.shared.UserException;
 import rastak.train.ws.model.dto.TicketDto;
-//import rastak.train.ws.model.entity.CommentEntity;
 import rastak.train.ws.model.entity.TicketEntity;
 import rastak.train.ws.model.entity.UserEntity;
 import rastak.train.ws.model.enums.Role;
-import rastak.train.ws.model.enums.Status;
 import rastak.train.ws.model.request.TicketRequest;
 import rastak.train.ws.model.response.TicketDeleteResponse;
 import rastak.train.ws.model.response.TicketResponse;
 
 import rastak.train.ws.repository.TicketRepository;
-import rastak.train.ws.repository.UserRepository;
 import rastak.train.ws.service.TicketService;
 import rastak.train.ws.util.TicketUtils;
 import rastak.train.ws.util.UserUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class TicketServiceImpl implements TicketService {
