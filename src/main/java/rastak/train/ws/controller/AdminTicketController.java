@@ -5,27 +5,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rastak.train.shared.MyApiResponse;
 import rastak.train.ws.model.dto.TicketDto;
-import rastak.train.ws.model.entity.TicketEntity;
-import rastak.train.ws.model.entity.UserEntity;
-import rastak.train.ws.model.enums.Status;
 import rastak.train.ws.model.request.TicketRequest;
 import rastak.train.ws.model.response.TicketResponse;
-import rastak.train.ws.repository.TicketRepository;
-import rastak.train.ws.repository.UserRepository;
 import rastak.train.ws.service.TicketService;
-
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -39,8 +30,6 @@ public class AdminTicketController {
     public AdminTicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
-
-
 
     @Operation(summary = "get a ticket", description = "Get ticket By PublicId, ADMIN can access to this method", tags = {"ADMIN-TICKETS"})
     @ApiResponses(value = {
