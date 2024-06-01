@@ -32,7 +32,9 @@ public class SecurityConfiguration {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/form/**",
+            "/form/create"
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -45,7 +47,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers(WITHE_LIST_URL)
                                 .permitAll()
-//                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/form/**").permitAll()
 //                        .requestMatchers("/users/**").hasAnyRole(USER.name(), ADMIN.name())
 //                        .requestMatchers(GET,"/users/**").hasAuthority(USER_READ.name())
 //                        .requestMatchers(GET,"/users/**").hasAuthority(ADMIN_READ.name())
