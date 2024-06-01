@@ -1,12 +1,11 @@
 package rastak.train.ws.controller;
 
-import net.formio.FormMapping;
-import net.formio.Forms;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import rastak.train.ws.model.request.DynamicForm;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import rastak.train.ws.model.dto.FormDto;
+import rastak.train.ws.model.entity.FormEntity;
+import rastak.train.ws.service.FormService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,17 +13,22 @@ import java.util.Map;
 @RestController
 @RequestMapping("/form")
 public class FormController {
-    @PostMapping("/create")
-    public void createForm(@RequestBody Map<String, List<String>> fieldData) {
-        List<String> fields = fieldData.get("fields");
 
-        if (fields != null && !fields.isEmpty()) {
-            FormMapping<DynamicForm> dynamicForm = Forms.basic(DynamicForm.class, "dynamicForm")
-                    .fields(fields.toArray(new String[0]))
-                    .build();
-            System.out.println("Form fields: " + fields);
-        } else {
-            System.out.println("No fields provided to create the form.");
-        }
+    @Autowired
+    private final FormService formService;
+
+    public FormController(FormService formService) {
+        this.formService = formService;
+    }
+
+    @PostMapping("/create")
+    public String createForm(@RequestBody Map<String, List<String>> fieldData) {
+        formService.createForm(fieldData);
+        return "Form created successfully";
+    }
+
+    @GetMapping("/all")
+    public List<FormDto> getAllForms() {
+        return formService.getAllForms();
     }
 }
