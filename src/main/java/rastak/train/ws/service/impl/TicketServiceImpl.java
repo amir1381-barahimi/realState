@@ -79,12 +79,15 @@ public class TicketServiceImpl implements TicketService {
         return ticketEntities.stream().map(ticketEntity -> new ModelMapper().map(ticketEntity, TicketDto.class)).toList();
     }
 
+<<<<<<< HEAD
 //    @Override
 //    public void addComment(String TicketId, CommentEntity comment) {
 //        TicketEntity ticketEntity = ticketRepository.findByPublicId(TicketId);
 //
 //    }
 
+=======
+>>>>>>> 691bc88 (hich)
     @Override
     public ResponseEntity<MyApiResponse> addTicket(TicketRequest ticketRequest, HttpServletRequest request) {
 
@@ -137,7 +140,6 @@ public class TicketServiceImpl implements TicketService {
         TicketDeleteResponse ticketDeleteResponse = ticketUtils.createDeleteResponse(publicId);
         return ticketUtils.createResponse(ticketDeleteResponse, HttpStatus.OK);
     }
-
 
 }
 
