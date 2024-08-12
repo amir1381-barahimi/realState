@@ -25,7 +25,7 @@ public class UserEntity implements UserDetails {
     private String fullname;
 
     @Column(length = 50)
-    private String username;
+    private String email;
 
     @Column(length = 50)
     private String password;
@@ -48,8 +48,8 @@ public class UserEntity implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     @Override
