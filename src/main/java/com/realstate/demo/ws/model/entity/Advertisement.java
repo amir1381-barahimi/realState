@@ -4,6 +4,7 @@ import com.realstate.demo.ws.model.enums.ListingStatus;
 import com.realstate.demo.ws.model.enums.PropertyStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+
 @Data
 @Entity
 public class Advertisement {
@@ -13,11 +14,23 @@ public class Advertisement {
     private long id;
     private String title;
     private String description;
-    private int contactNumber;
-    @OneToOne
-    private Home home;
+    private String street;
+    private String city;
+    private String postalCode;
+    private String country;
+    private String statePrice;
+    private String stateType;
+    private boolean rent;
+    private String numberBath;
+    private String numberBed;
+    private String email;
+    private String phone;
+    //
+//    private int contactNumber;
+//    @OneToOne
+//    private Home home;
     @ManyToOne
     private UserEntity user;
-    private PropertyStatus propertyStatus;
-    private ListingStatus listingStatus;
+//    private PropertyStatus propertyStatus;
+//    private ListingStatus listingStatus;
 }

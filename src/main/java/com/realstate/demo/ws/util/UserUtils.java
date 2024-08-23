@@ -8,7 +8,10 @@ import com.realstate.demo.ws.model.dto.UserDto;
 import com.realstate.demo.ws.model.entity.UserEntity;
 import com.realstate.demo.ws.model.enums.Role;
 import com.realstate.demo.ws.model.enums.Status;
+import com.realstate.demo.ws.model.request.JSONSignUp;
 import com.realstate.demo.ws.model.request.SignUp;
+import com.realstate.demo.ws.model.response.JSONUserDeleteResponse;
+import com.realstate.demo.ws.model.response.JSONUserResponse;
 import com.realstate.demo.ws.model.response.UserDeleteResponse;
 import com.realstate.demo.ws.model.response.UserResponse;
 import com.realstate.demo.ws.repository.TicketRepository;
@@ -40,12 +43,23 @@ public class UserUtils {
         this.utils = utils;
     }
 
-    public UserResponse convert(UserEntity userEntity) {
+    public JSONUserResponse convert(UserEntity userEntity, String jwtToken, String refreshToken) {
         if (userEntity == null) {
             return null;
         }
-        UserResponse userResponse = modelMapper.map(userEntity, UserResponse.class);
-        return userResponse;
+        JSONUserResponse JSONUserResponse = modelMapper.map(userEntity, JSONUserResponse.class);
+        JSONUserResponse.setToken(jwtToken);
+        JSONUserResponse.setRefreshToken(refreshToken);
+
+        return JSONUserResponse;
+    }
+    public JSONUserResponse convert(UserEntity userEntity) {
+        if (userEntity == null) {
+            return null;
+        }
+        JSONUserResponse JSONUserResponse = modelMapper.map(userEntity, JSONUserResponse.class);
+
+        return JSONUserResponse;
     }
 
     public ResponseEntity<MyApiResponse> createResponse(Object userResponse, HttpStatus httpStatus) {
@@ -61,14 +75,14 @@ public class UserUtils {
     }
 
 
-    public UserDto convert(SignUp signUp) {
+    public UserDto convert(JSONSignUp signUp) {
         if (isValidRequestModel(signUp)) {
             return createDtoModel(signUp);
         }
         return null;
     }
 
-    private UserDto createDtoModel(SignUp signUp) {
+    private UserDto createDtoModel(JSONSignUp signUp) {
         UserDto userDto = modelMapper.map(signUp, UserDto.class);
         userDto.setPublicId(utils.getPublicId());
         return userDto;
@@ -79,19 +93,20 @@ public class UserUtils {
             return null;
         }
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        userEntity.setRole(Role.CUSTOMER);
         return userEntity;
     }
 
-    public UserDeleteResponse createDeleteResponse(String publicId) {
-        UserDeleteResponse userDeleteResponse = new UserDeleteResponse();
-        userDeleteResponse.setPublicId(publicId);
-        userDeleteResponse.setStatus("user with publicId {" + publicId + "} deleted");
-        return userDeleteResponse;
+    public JSONUserDeleteResponse createDeleteResponse(String publicId) {
+        JSONUserDeleteResponse JSONUserDeleteResponse = new JSONUserDeleteResponse();
+        JSONUserDeleteResponse.setPublicId(publicId);
+        JSONUserDeleteResponse.setStatus("user with publicId {" + publicId + "} deleted");
+        return JSONUserDeleteResponse;
     }
 
-    public UserEntity update(UserEntity existedUserEntity, SignUp signUp) {
-        if (signUp.getRole() != null)
-            existedUserEntity.setRole(signUp.getRole());
+    public UserEntity update(UserEntity existedUserEntity, JSONSignUp signUp) {
+//        if (signUp.getRole() != null)
+//            existedUserEntity.setRole(signUp.getRole());
         if (signUp.getUsername() != null)
             existedUserEntity.setUsername(signUp.getUsername());
         if (signUp.getFullname() != null)
@@ -101,7 +116,7 @@ public class UserUtils {
         return existedUserEntity;
     }
 
-    private boolean isValidRequestModel(SignUp signUp) {
+    private boolean isValidRequestModel(JSONSignUp signUp) {
         boolean flag = true;
         if (signUp == null) {
             return false;
@@ -115,9 +130,9 @@ public class UserUtils {
         if (signUp.getPassword().isEmpty()) {
             return false;
         }
-        if (signUp.getRole() == null) {
-            return false;
-        }
+//        if (signUp.getRole() == null) {
+//            return false;
+//        }
         return flag;
     }
 

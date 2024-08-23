@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface AdService {
-    JSONAdvertisementResponse createAd(String title, String description, long homeId, int contactNumber, ListingStatus listingStatus, PropertyStatus propertyStatus, HttpServletRequest request);
+    JSONAdvertisementResponse createAd(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone, HttpServletRequest request);
 
     JSONAdvertisementResponse getAd(long id);
 
-    List<JSONAdvertisementResponse> getAllAdd();
+    List<JSONAdvertisementResponse> getAllAdd(String city);
 
     void deleteAd(long id);
+
+    List<JSONAdvertisementResponse> getAllAdByUser(HttpServletRequest request);
 }

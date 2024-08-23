@@ -1,8 +1,8 @@
 package com.realstate.demo.ws.controller;
 
 import com.realstate.demo.shared.MyApiResponse;
-import com.realstate.demo.ws.model.request.Login;
-import com.realstate.demo.ws.model.request.SignUp;
+import com.realstate.demo.ws.model.request.JSONLogin;
+import com.realstate.demo.ws.model.request.JSONSignUp;
 import com.realstate.demo.ws.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +34,7 @@ public class AuthenticateController {
             @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")}),
     })
     @PostMapping("/signup")
-    public ResponseEntity<MyApiResponse> signUp(@RequestBody SignUp signUp) {
+    public ResponseEntity<MyApiResponse> signUp(@RequestBody JSONSignUp signUp) {
         logger.info("add new user to database  with username: {}", signUp.getUsername());
         return userService.addUser(signUp);
     }
@@ -46,7 +46,7 @@ public class AuthenticateController {
             @ApiResponse(responseCode = "500", description = "The server has encountered a situation it does not know how to handle.", content = {@Content(mediaType = "application/json")}),
     })
     @PostMapping("/login")
-    public ResponseEntity<MyApiResponse> login(@RequestBody Login login) {
+    public ResponseEntity<MyApiResponse> login(@RequestBody JSONLogin login) {
         logger.info("User with username: " + login.getUsername() + " try to login");
         return userService.loginUser(login.getUsername(), login.getPassword());
     }

@@ -1,11 +1,9 @@
 package com.realstate.demo.ws.util;
 
 import com.realstate.demo.ws.model.entity.Advertisement;
-import com.realstate.demo.ws.model.entity.Home;
-import com.realstate.demo.ws.model.enums.ListingStatus;
-import com.realstate.demo.ws.model.enums.PropertyStatus;
+import com.realstate.demo.ws.model.entity.UserEntity;
 import com.realstate.demo.ws.model.response.JSONAdvertisementResponse;
-import com.realstate.demo.ws.repository.HomeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -14,35 +12,46 @@ import java.util.List;
 
 @Component
 public class AdUtils {
-    private final HomeRepository homeRepository;
 
-    public AdUtils(HomeRepository homeRepository) {
-        this.homeRepository = homeRepository;
-    }
 
-    public Advertisement convert(String title, String description, long homeId, int contactNumber, ListingStatus listingStatus, PropertyStatus propertyStatus) {
+    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone, UserEntity user) {
 
-        Home home = homeRepository.findHomeById(homeId);
         Advertisement i = new Advertisement();
-        i.setContactNumber(contactNumber);
         i.setDescription(description);
-        i.setHome(home);
-        i.setListingStatus(listingStatus);
-        i.setPropertyStatus(propertyStatus);
         i.setTitle(title);
+        i.setStreet(street);
+        i.setCity(city);
+        i.setCountry(country);
+        i.setPostalCode(postalCode);
+        i.setStatePrice(statePrice);
+        i.setStateType(stateType);
+        i.setNumberBath(numberBath);
+        i.setNumberBed(numberBed);
+        i.setEmail(email);
+        i.setPhone(phone);
+        i.setRent(false);
+        i.setUser(user);
+
         return i;
 
     }
 
     public JSONAdvertisementResponse convert(Advertisement i) {
         JSONAdvertisementResponse j = new JSONAdvertisementResponse();
-        j.setContactNumber(i.getContactNumber());
         j.setDescription(i.getDescription());
-        j.setHome(i.getHome());
         j.setTitle(i.getTitle());
-        j.setContactNumber(i.getContactNumber());
-        j.setPropertyStatus(i.getPropertyStatus());
-        j.setListingStatus(i.getListingStatus());
+        j.setDescription(i.getDescription());
+        j.setStreet(i.getStreet());
+        j.setCity(i.getCity());
+        j.setPostalCode(i.getPostalCode());
+        j.setCountry(i.getCountry());
+        j.setStatePrice(i.getStatePrice());
+        j.setStateType(i.getStateType());
+        j.setRent(false);
+        j.setNumberBath(i.getNumberBath());
+        j.setNumberBed(i.getNumberBed());
+        j.setEmail(i.getEmail());
+        j.setPhone(i.getPhone());
         return j;
     }
 

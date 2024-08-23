@@ -1,9 +1,6 @@
 package com.realstate.demo.ws.model.response;
 
-import com.realstate.demo.ws.model.entity.Home;
-import com.realstate.demo.ws.model.entity.UserEntity;
-import com.realstate.demo.ws.model.enums.ListingStatus;
-import com.realstate.demo.ws.model.enums.PropertyStatus;
+
 import lombok.Data;
 
 
@@ -12,9 +9,15 @@ public class JSONAdvertisementResponse {
 
     private String title;
     private String description;
-    private int contactNumber;
-    private UserEntity user;
-    private Home home;
-    private PropertyStatus propertyStatus;
-    private ListingStatus listingStatus;
+    private String street;
+    private String city;
+    private String postalCode;
+    private String country;
+    private String statePrice;
+    private String stateType;
+    private boolean rent;
+    private String numberBath;
+    private String numberBed;
+    private String email;
+    private String phone;
 }

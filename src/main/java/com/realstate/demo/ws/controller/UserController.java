@@ -2,8 +2,8 @@ package com.realstate.demo.ws.controller;
 
 import com.realstate.demo.shared.MyApiResponse;
 import com.realstate.demo.ws.model.dto.UserDto;
-import com.realstate.demo.ws.model.request.SignUp;
-import com.realstate.demo.ws.model.response.UserResponse;
+import com.realstate.demo.ws.model.request.JSONSignUp;
+import com.realstate.demo.ws.model.response.JSONUserResponse;
 import com.realstate.demo.ws.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -53,9 +53,9 @@ public class UserController {
     })
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
-    public List<UserResponse> getAllUser() {
+    public List<JSONUserResponse> getAllUser() {
         List<UserDto> userDtos = userService.getAllUser();
-        return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, UserResponse.class)).toList();
+        return userDtos.stream().map(userDto -> new ModelMapper().map(userDto, JSONUserResponse.class)).toList();
     }
     @Operation(summary = "update user", description = "update User By Id from Database, Only ADMIN can access to this method", tags = {"USER"})
     @ApiResponses(value = {
@@ -65,7 +65,7 @@ public class UserController {
     })
     @PutMapping("/{publicId}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<MyApiResponse> updateUser(@RequestBody SignUp signUp, @PathVariable String publicId){
+    public ResponseEntity<MyApiResponse> updateUser(@RequestBody JSONSignUp signUp, @PathVariable String publicId){
         return userService.updateUser(signUp, publicId);
     }
     @Operation(summary = "delete user", description = "delete User By Id from Database, Only ADMIN can access to this method", tags = {"USER"})

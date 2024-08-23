@@ -9,9 +9,9 @@ import com.realstate.demo.token.TokenType;
 import com.realstate.demo.ws.model.dto.UserDto;
 import com.realstate.demo.ws.model.entity.UserEntity;
 import com.realstate.demo.ws.model.request.JSONRoleRequest;
-import com.realstate.demo.ws.model.request.SignUp;
-import com.realstate.demo.ws.model.response.UserDeleteResponse;
-import com.realstate.demo.ws.model.response.UserResponse;
+import com.realstate.demo.ws.model.request.JSONSignUp;
+import com.realstate.demo.ws.model.response.JSONUserDeleteResponse;
+import com.realstate.demo.ws.model.response.JSONUserResponse;
 import com.realstate.demo.ws.repository.UserRepository;
 import com.realstate.demo.ws.service.UserService;
 import com.realstate.demo.ws.util.UserUtils;
@@ -26,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
@@ -48,8 +47,8 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             throw new UserException("User not found", HttpStatus.NOT_FOUND);
         }
-        UserResponse userResponse = userUtils.convert(userEntity);
-        return userUtils.createResponse(userResponse, HttpStatus.OK);
+        JSONUserResponse JSONUserResponse = userUtils.convert(userEntity);
+        return userUtils.createResponse(JSONUserResponse, HttpStatus.OK);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<MyApiResponse> addUser(SignUp signUp) {
+    public ResponseEntity<MyApiResponse> addUser(JSONSignUp signUp) {
         UserDto userDto = userUtils.convert(signUp);
         if (userDto == null) {
             throw new UserException("Invalid Input", HttpStatus.BAD_REQUEST);
@@ -85,14 +84,16 @@ public class UserServiceImpl implements UserService {
         return userUtils.createResponse(userUtils.convert(storedUserEntity), HttpStatus.CREATED);
     }
 
+
+
     @Override
     public ResponseEntity<MyApiResponse> deleteUser(String publicId) {
         int deleteUser = userRepository.deleteByPublicId(publicId);
         if (deleteUser == 0) {
             throw new UserException("User not found with this id", HttpStatus.NOT_FOUND);
         }
-        UserDeleteResponse userDeleteResponse = userUtils.createDeleteResponse(publicId);
-        return userUtils.createResponse(userDeleteResponse, HttpStatus.OK);
+        JSONUserDeleteResponse JSONUserDeleteResponse = userUtils.createDeleteResponse(publicId);
+        return userUtils.createResponse(JSONUserDeleteResponse, HttpStatus.OK);
     }
 
     @Override
@@ -111,12 +112,12 @@ public class UserServiceImpl implements UserService {
         logger.info("token: " + jwtToken);
         logger.info("refreshToken: " + refreshToken);
         logger.info("User with username: " + username + " login");
-        UserResponse userResponse = userUtils.convert(existedUserEntity);
-        return userUtils.createResponse(userResponse, HttpStatus.OK);
+        JSONUserResponse JSONUserResponse = userUtils.convert(existedUserEntity, jwtToken, refreshToken);
+        return userUtils.createResponse(JSONUserResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<MyApiResponse> updateUser(SignUp signUp, String publicId) {
+    public ResponseEntity<MyApiResponse> updateUser(JSONSignUp signUp, String publicId) {
         UserEntity existedUserEntity = userRepository.findByPublicId(publicId);
         if (existedUserEntity == null) {
             throw new UserException("User not found", HttpStatus.NOT_FOUND);
@@ -133,6 +134,13 @@ public class UserServiceImpl implements UserService {
             throw new UserException("Database IO Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return userUtils.createResponse(userUtils.convert(updateUserEntity), HttpStatus.OK);
+    }
+
+    @Override
+    public void setRole(String id, JSONRoleRequest r) {
+        UserEntity user = userRepository.findByPublicId(id);
+        user.setRole(r.getRole());
+        userRepository.save(user);
     }
 
 
@@ -175,12 +183,5 @@ public class UserServiceImpl implements UserService {
                 savedUserToken(existedUserEntity, accessToken);
             }
         }
-    }
-
-    @Override
-    public void setRole(String id, JSONRoleRequest r) {
-        UserEntity user = userRepository.findByPublicId(id);
-        user.setRole(r.getRole());
-        userRepository.save(user);
     }
 }
