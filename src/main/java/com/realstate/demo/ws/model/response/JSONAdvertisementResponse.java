@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class JSONAdvertisementResponse {
 
+    private Long id;
     private String title;
     private String description;
     private String street;

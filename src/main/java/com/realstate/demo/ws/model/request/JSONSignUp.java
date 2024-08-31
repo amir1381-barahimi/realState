@@ -20,6 +20,4 @@ public class JSONSignUp {
     private String password;
     @Schema(description = "User fullname", example = "Alireza Ahmadi")
     private String fullname;
-    @Schema(description = "User role", example = "ADMIN")
-    private Role role;
 }

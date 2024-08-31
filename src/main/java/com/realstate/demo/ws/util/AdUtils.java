@@ -38,6 +38,7 @@ public class AdUtils {
 
     public JSONAdvertisementResponse convert(Advertisement i) {
         JSONAdvertisementResponse j = new JSONAdvertisementResponse();
+        j.setId(i.getId());
         j.setDescription(i.getDescription());
         j.setTitle(i.getTitle());
         j.setDescription(i.getDescription());
