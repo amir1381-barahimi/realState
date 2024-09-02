@@ -21,4 +21,5 @@ public class JSONAdvertisementResponse {
     private String numberBed;
     private String email;
     private String phone;
+    private String image;
 }

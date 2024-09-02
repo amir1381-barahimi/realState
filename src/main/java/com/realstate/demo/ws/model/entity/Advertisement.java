@@ -25,12 +25,8 @@ public class Advertisement {
     private String numberBed;
     private String email;
     private String phone;
-    //
-//    private int contactNumber;
-//    @OneToOne
-//    private Home home;
+    private String image;
+
     @ManyToOne
     private UserEntity user;
-//    private PropertyStatus propertyStatus;
-//    private ListingStatus listingStatus;
 }

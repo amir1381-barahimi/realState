@@ -35,7 +35,9 @@ public class SecurityConfiguration {
             "/swagger-ui.html",
             "/home/**",
             "/ad/**",
-            "h2-console"
+            "/h2-console",
+            "/uploadimage",
+            "/upload"
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;

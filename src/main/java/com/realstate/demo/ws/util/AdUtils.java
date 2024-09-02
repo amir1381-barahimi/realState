@@ -14,7 +14,7 @@ import java.util.List;
 public class AdUtils {
 
 
-    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone, UserEntity user) {
+    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image, UserEntity user) {
 
         Advertisement i = new Advertisement();
         i.setDescription(description);
@@ -31,7 +31,7 @@ public class AdUtils {
         i.setPhone(phone);
         i.setRent(false);
         i.setUser(user);
-
+        i.setImage(image);
         return i;
 
     }
@@ -53,6 +53,7 @@ public class AdUtils {
         j.setNumberBed(i.getNumberBed());
         j.setEmail(i.getEmail());
         j.setPhone(i.getPhone());
+        j.setImage(i.getImage());
         return j;
     }
 

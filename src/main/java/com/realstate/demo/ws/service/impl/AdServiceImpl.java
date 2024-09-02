@@ -38,9 +38,9 @@
     //    }
 
         @Override
-        public JSONAdvertisementResponse createAd(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone, HttpServletRequest request) {
+        public JSONAdvertisementResponse createAd(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image, HttpServletRequest request) {
             UserEntity user = userUtils.getCurrentUser(request);
-            Advertisement i = utils.convert(title, description, street, city, postalCode, country, statePrice, stateType, numberBath, numberBed, email, phone, user);
+            Advertisement i = utils.convert(title, description, street, city, postalCode, country, statePrice, stateType, numberBath, numberBed, email, phone,image, user);
             adRepository.save(i);
 
             return utils.convert(i);

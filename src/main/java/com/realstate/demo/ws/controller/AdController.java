@@ -4,10 +4,15 @@ import com.realstate.demo.ws.model.request.JSONSAdvertisementRequest;
 import com.realstate.demo.ws.model.response.JSONAdvertisementResponse;
 import com.realstate.demo.ws.service.AdService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -22,13 +27,27 @@ public class AdController {
 
     @PostMapping
     public JSONAdvertisementResponse createAd(@RequestBody JSONSAdvertisementRequest r, HttpServletRequest request){
-        return service.createAd(r.getTitle(),r.getDescription(),r.getStreet(),r.getCity(),r.getPostalCode(),r.getCountry(),r.getStatePrice(),r.getStateType(),r.getNumberBath(),r.getNumberBed(),r.getEmail(),r.getPhone(),request);
+        return service.createAd(r.getTitle(),r.getDescription(),r.getStreet(),r.getCity(),r.getPostalCode(),r.getCountry(),r.getStatePrice(),r.getStateType(),r.getNumberBath(),r.getNumberBed(),r.getEmail(),r.getPhone(),r.getImage(),request);
     }
 
     @GetMapping("/{id}")
     public JSONAdvertisementResponse getAd(@PathVariable("id")long id){
         return service.getAd(id);
     }
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<InputStreamResource> getAdImage(@PathVariable("id")long id) throws IOException {
+        JSONAdvertisementResponse jsonAdvertisementResponse =  service.getAd(id);
+        String imageUrl = jsonAdvertisementResponse.getImage().replace("\\","/");
+        imageUrl = "file:///"+ imageUrl;
+        URL url = new URL(imageUrl);
+        InputStream imageStream = url.openStream();
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(imageStream));
+    }
+
 
     @GetMapping("/all")
     public List<JSONAdvertisementResponse> getAllAd(@RequestParam(value = "city", required = false) String city){
