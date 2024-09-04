@@ -25,8 +25,8 @@ public class Advertisement {
     private String numberBed;
     private String email;
     private String phone;
+    @Lob
     private String image;
-
     @ManyToOne
     private UserEntity user;
 }
