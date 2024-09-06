@@ -13,7 +13,7 @@ import java.util.List;
 public class AdUtils {
 
 
-    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image,String numberParking, UserEntity user) {
+    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image,String numberParking,String latitude , String longitude, UserEntity user) {
 
         Advertisement i = new Advertisement();
         i.setDescription(description);
@@ -32,6 +32,8 @@ public class AdUtils {
         i.setUser(user);
         i.setImage(image);
         i.setNumberParking(numberParking);
+        i.setLatitude(latitude);
+        i.setLongitude(longitude);
         return i;
 
     }
@@ -56,6 +58,8 @@ public class AdUtils {
         j.setImage(i.getImage());
         j.setNumberParking(i.getNumberParking());
         j.setClosestHomeId(adId1);
+        j.setLatitude(i.getLatitude());
+        j.setLongitude(i.getLongitude());
         return j;
     }
 

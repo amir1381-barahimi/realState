@@ -27,7 +27,7 @@ public class AdController {
 
     @PostMapping
     public JSONAdvertisementResponse createAd(@RequestBody JSONSAdvertisementRequest r, HttpServletRequest request){
-        return service.createAd(r.getTitle(),r.getDescription(),r.getStreet(),r.getCity(),r.getPostalCode(),r.getCountry(),r.getStatePrice(),r.getStateType(),r.getNumberBath(),r.getNumberBed(),r.getEmail(),r.getPhone(),r.getImage(),r.getNumberParking(),request);
+        return service.createAd(r.getTitle(),r.getDescription(),r.getStreet(),r.getCity(),r.getPostalCode(),r.getCountry(),r.getStatePrice(),r.getStateType(),r.getNumberBath(),r.getNumberBed(),r.getEmail(),r.getPhone(),r.getImage(),r.getNumberParking(),r.getLatitude(),r.getLongitude(),request);
     }
 
     @GetMapping("/{id}")

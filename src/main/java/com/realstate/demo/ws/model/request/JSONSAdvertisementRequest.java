@@ -23,4 +23,7 @@ public class JSONSAdvertisementRequest {
     private String phone;
     private String image;
     private String numberParking;
+
+    private String latitude;
+    private String longitude;
 }
