@@ -25,9 +25,10 @@ public class Advertisement {
     private String numberBed;
     private String email;
     private String phone;
+    @Lob
     private String image;
     private String numberParking;
-
     @ManyToOne
     private UserEntity user;
 }
+ 
