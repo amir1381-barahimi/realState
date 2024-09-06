@@ -3,7 +3,6 @@ package com.realstate.demo.ws.util;
 import com.realstate.demo.ws.model.entity.Advertisement;
 import com.realstate.demo.ws.model.entity.UserEntity;
 import com.realstate.demo.ws.model.response.JSONAdvertisementResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class AdUtils {
 
 
-    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image, UserEntity user) {
+    public Advertisement convert(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image,String numberParking, UserEntity user) {
 
         Advertisement i = new Advertisement();
         i.setDescription(description);
@@ -32,11 +31,12 @@ public class AdUtils {
         i.setRent(false);
         i.setUser(user);
         i.setImage(image);
+        i.setNumberParking(numberParking);
         return i;
 
     }
 
-    public JSONAdvertisementResponse convert(Advertisement i) {
+    public JSONAdvertisementResponse convert(Advertisement i, Long adId1) {
         JSONAdvertisementResponse j = new JSONAdvertisementResponse();
         j.setId(i.getId());
         j.setDescription(i.getDescription());
@@ -54,13 +54,15 @@ public class AdUtils {
         j.setEmail(i.getEmail());
         j.setPhone(i.getPhone());
         j.setImage(i.getImage());
+        j.setNumberParking(i.getNumberParking());
+        j.setClosestHomeId(adId1);
         return j;
     }
 
     public List<JSONAdvertisementResponse> convert(List<Advertisement> list) {
         List<JSONAdvertisementResponse> jList = new ArrayList<>();
         for (Advertisement item : list) {
-            JSONAdvertisementResponse j = convert(item);
+            JSONAdvertisementResponse j = convert(item, null);
             jList.add(j);
         }
         return jList;

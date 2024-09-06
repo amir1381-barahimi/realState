@@ -3,11 +3,13 @@ package com.realstate.demo.ws.controller;
 import com.realstate.demo.shared.MyApiResponse;
 import com.realstate.demo.ws.model.request.JSONLogin;
 import com.realstate.demo.ws.model.request.JSONSignUp;
+import com.realstate.demo.ws.model.request.JSONChangePassword;
 import com.realstate.demo.ws.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +51,12 @@ public class AuthenticateController {
     public ResponseEntity<MyApiResponse> login(@RequestBody JSONLogin login) {
         logger.info("User with username: " + login.getUsername() + " try to login");
         return userService.loginUser(login.getUsername(), login.getPassword());
+    }
+
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<MyApiResponse> changePassword(@RequestBody JSONChangePassword changePassword, HttpServletRequest request) {
+        return userService.changePassword(changePassword,request);
     }
 
 }

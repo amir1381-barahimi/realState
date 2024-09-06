@@ -26,6 +26,7 @@ public class Advertisement {
     private String email;
     private String phone;
     private String image;
+    private String numberParking;
 
     @ManyToOne
     private UserEntity user;

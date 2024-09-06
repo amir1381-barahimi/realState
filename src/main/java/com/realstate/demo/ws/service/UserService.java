@@ -4,7 +4,8 @@ import com.realstate.demo.shared.MyApiResponse;
 import com.realstate.demo.ws.model.dto.UserDto;
 import com.realstate.demo.ws.model.request.JSONRoleRequest;
 import com.realstate.demo.ws.model.request.JSONSignUp;
-import com.realstate.demo.ws.model.request.SignUp;
+import com.realstate.demo.ws.model.request.JSONChangePassword;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface UserService {
     ResponseEntity<MyApiResponse> updateUser(JSONSignUp signUp, String publicId);
 
     void setRole(String id, JSONRoleRequest r);
+
+    ResponseEntity<MyApiResponse> changePassword(JSONChangePassword jsonChangePassword, HttpServletRequest request);
+
 }

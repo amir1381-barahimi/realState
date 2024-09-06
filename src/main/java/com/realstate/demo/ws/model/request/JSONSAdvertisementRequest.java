@@ -15,10 +15,12 @@ public class JSONSAdvertisementRequest {
     private String country;
     private String statePrice;
     private String stateType;
+
     private boolean rent;
     private String numberBath;
     private String numberBed;
     private String email;
     private String phone;
     private String image;
+    private String numberParking;
 }

@@ -22,4 +22,6 @@ public class JSONAdvertisementResponse {
     private String email;
     private String phone;
     private String image;
+    private String numberParking;
+    private Long closestHomeId;
 }

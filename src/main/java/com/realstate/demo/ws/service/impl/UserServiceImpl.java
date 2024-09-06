@@ -10,6 +10,8 @@ import com.realstate.demo.ws.model.dto.UserDto;
 import com.realstate.demo.ws.model.entity.UserEntity;
 import com.realstate.demo.ws.model.request.JSONRoleRequest;
 import com.realstate.demo.ws.model.request.JSONSignUp;
+import com.realstate.demo.ws.model.request.JSONChangePassword;
+import com.realstate.demo.ws.model.response.JSONChangePasswordResponse;
 import com.realstate.demo.ws.model.response.JSONUserDeleteResponse;
 import com.realstate.demo.ws.model.response.JSONUserResponse;
 import com.realstate.demo.ws.repository.UserRepository;
@@ -141,6 +143,22 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByPublicId(id);
         user.setRole(r.getRole());
         userRepository.save(user);
+    }
+
+    @Override
+    public ResponseEntity<MyApiResponse> changePassword(JSONChangePassword jsonChangePassword, HttpServletRequest request) {
+        UserEntity user = userUtils.getCurrentUser(request);
+        if(user == null){
+            throw new UserException("user need login", HttpStatus.NOT_FOUND);
+        }
+        if(!user.getPassword().equals(jsonChangePassword.getOldPassword())){
+            throw new UserException("the old password is incorrect", HttpStatus.CONFLICT);
+        }
+        user.setPassword(jsonChangePassword.getNewPassword());
+        userRepository.save(user);
+        JSONChangePasswordResponse changePasswordResponse = new JSONChangePasswordResponse();
+        changePasswordResponse.setNewPassword(user.getPassword());
+        return userUtils.createResponse(changePasswordResponse,HttpStatus.OK);
     }
 
 
