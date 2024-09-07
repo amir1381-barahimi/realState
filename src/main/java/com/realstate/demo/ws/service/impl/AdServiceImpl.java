@@ -2,17 +2,25 @@
 
     import com.realstate.demo.ws.model.entity.Advertisement;
     import com.realstate.demo.ws.model.entity.UserEntity;
+    import com.realstate.demo.ws.model.request.HomePricePredictRequest;
     import com.realstate.demo.ws.model.response.JSONAdvertisementResponse;
     import com.realstate.demo.ws.repository.AdRepository;
     import com.realstate.demo.ws.service.AdService;
     import com.realstate.demo.ws.util.AdUtils;
     import com.realstate.demo.ws.util.UserUtils;
     import jakarta.servlet.http.HttpServletRequest;
+    import org.springframework.http.HttpEntity;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.MediaType;
+    import org.springframework.http.ResponseEntity;
     import org.springframework.stereotype.Service;
     import org.springframework.util.StringUtils;
+    import org.springframework.web.client.RestTemplate;
 
 
+    import java.util.ArrayList;
     import java.util.List;
+    import java.util.Map;
     import java.util.Optional;
 
     @Service
@@ -40,8 +48,31 @@
         @Override
         public JSONAdvertisementResponse createAd(String title, String description, String street, String city, String postalCode, String country, String statePrice, String stateType, String numberBath, String numberBed, String email, String phone,String image,String numberParking,String latitude , String longitude, HttpServletRequest request) {
             UserEntity user = userUtils.getCurrentUser(request);
-            Advertisement i = utils.convert(title, description, street, city, postalCode, country, statePrice, stateType, numberBath, numberBed, email, phone,image,numberParking,latitude,longitude, user);
+
+            RestTemplate restTemplate = new RestTemplate();
+            String pythonApiUrl = "http://localhost:5000/predict";
+
+            // Send request to Python API
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HomePricePredictRequest homePricePredictRequest = new HomePricePredictRequest();
+            homePricePredictRequest.setLatitude(latitude);
+            homePricePredictRequest.setLongitude(longitude);
+            HttpEntity<HomePricePredictRequest> entity = new HttpEntity<HomePricePredictRequest>(homePricePredictRequest,headers);
+
+            ResponseEntity<Map> response = restTemplate.postForEntity(pythonApiUrl, entity, Map.class);
+            String predictPrice = response.getBody().get("predicted_price").toString();
+            String isAppropriate;
+
+            if(Double.valueOf(predictPrice) >= Double.valueOf(statePrice) ){
+                isAppropriate = "YES";
+            }else{
+                isAppropriate = "NO";
+            }
+
+            Advertisement i = utils.convert(title, description, street, city, postalCode, country, statePrice, stateType, numberBath, numberBed, email, phone,image,numberParking,latitude,longitude,isAppropriate, user);
             adRepository.save(i);
+
 
             return utils.convert(i, null);
         }

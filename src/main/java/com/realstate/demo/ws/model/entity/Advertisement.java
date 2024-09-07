@@ -30,6 +30,7 @@ public class Advertisement {
     @Lob
     private String image;
     private String numberParking;
+    private String isAppropriate;
     @ManyToOne
     private UserEntity user;
 }

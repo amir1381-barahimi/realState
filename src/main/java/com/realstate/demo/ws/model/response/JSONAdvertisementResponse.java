@@ -24,7 +24,7 @@ public class JSONAdvertisementResponse {
     private String image;
     private String numberParking;
     private Long closestHomeId;
-
     private String latitude;
     private String longitude;
+    private String isAppropriate;
 }
